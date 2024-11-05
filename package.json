@@ -107,9 +107,6 @@
     },
     "devDependencies": {
         "@anywidget/vite": "^0.1.1",
-        "@commitlint/cli": "^17.7.1",
-        "@commitlint/config-conventional": "^17.7.0",
-        "@commitlint/cz-commitlint": "^17.7.1",
         "@jupyterlab/builder": "^4.0.0",
         "@types/d3": "^7.4.0",
         "@types/json-schema": "^7.0.11",
