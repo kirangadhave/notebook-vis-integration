@@ -3,6 +3,7 @@ import { CODE_CELL, TrrackableCell } from '../../cells';
 import { Nullable } from '../../utils/nullable';
 import { Flex } from '@mantine/core';
 
+// Figure out what to change to get it working without this
 export function useCell<T extends HTMLElement = HTMLDivElement>() {
   const ref = useRef<T>(null);
 
