@@ -1,3 +1,0 @@
-{
-  "src/**/*": ["hatch run jlpm lint"]
-}
