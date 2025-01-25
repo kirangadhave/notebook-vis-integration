@@ -314,14 +314,13 @@ First, build with
 ```bash
 hatch run build_extension
 ```
+Currently, the widget server doesn't work for VSCode, so you'll have to manually rebuild every time. For this reason, you'll want to leave dev mode off, as dev mode tries to use the widget server instead of the static build directory to import the widget.
+
 Create a local python environment and set it as the current kernel for the Jupyter notebook in VSCode that you want to use for development. Then, inside this kernel, install `persist_ext` as an editable local package:
 ```bash
 pip install -e .
 ```
-Next, run the widget server. This serves JS widgets to the Python code.
-```bash
-hatch run watch_widgets
-```
+
 After each change, you must rebuild with `hatch run build_extension` and restart the kernel in VSCode to see the changes applied.
 
 ### Acknowledgements

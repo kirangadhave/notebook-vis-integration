@@ -97,4 +97,4 @@ export function PersistOutput({ cell }: Props) {
   );
 }
 
-export const render = createRender(withTrrackableCell(PersistOutput));
+export default { render: createRender(withTrrackableCell(PersistOutput)) };
