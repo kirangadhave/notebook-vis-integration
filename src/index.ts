@@ -34,6 +34,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     // Listen to notebook changes
     nbTracker.currentChanged.connect((_, nbPanel) => {
       const wrapper = new NotebookWrapper(nbPanel);
+      // This is shared between all tabs
       window.Persist.Notebook = wrapper;
 
       wrapper.setupFinish.then(() => {

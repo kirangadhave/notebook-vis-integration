@@ -64,6 +64,7 @@ function useSyncedState<T>(
 }
 
 export function DatatableComponent({ cell }: Props) {
+  // useModelState comes from anywidget and is used to get data from the python kernel (traitlet)
   const [data] = useModelState<Data>('data_values');
   const [dfVisibleColumns] = useModelState<string[]>(
     'df_columns_non_meta_with_annotations'

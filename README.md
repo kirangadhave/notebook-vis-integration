@@ -318,7 +318,11 @@ Create a local python environment and set it as the current kernel for the Jupyt
 ```bash
 pip install -e .
 ```
-After each change, you must rebuild with `hatch` and restart the kernel in VSCode to see the changes applied.
+Next, run the widget server. This serves JS widgets to the Python code.
+```bash
+hatch run watch_widgets
+```
+After each change, you must rebuild with `hatch run build_extension` and restart the kernel in VSCode to see the changes applied.
 
 ### Acknowledgements
 
