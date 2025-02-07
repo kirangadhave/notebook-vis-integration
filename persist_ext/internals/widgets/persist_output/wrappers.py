@@ -10,7 +10,20 @@ from persist_ext.internals.widgets.vegalite_chart.utils import (
     is_vega_altair_chart,
     pop_data_defs_from_charts_recursive,
 )
+from persist_ext.internals.widgets.base.data_store_widget import init_data_store
 
+def init_persist(file_path: str):
+    """
+    Initializes persist by creating a file to store persistent interaction history in.
+    Args:
+      file_path (str): The path to the file where the persistent interaction history will be stored.
+    Returns:
+      None
+    """
+    global is_persist_ext_initialized
+    is_persist_ext_initialized = True
+    init_data_store(file_path)
+    
 
 def Persist(
     id: str,
@@ -20,6 +33,11 @@ def Persist(
     id_column=ID_COLUMN,
     data_accessor=DEFAULT_DATA_ACCESSOR,
 ):
+    global is_persist_ext_initialized
+    if not is_persist_ext_initialized:
+        raise ValueError(
+            "You must call init_persist() before using the Persist widget."
+        )
     if chart is None and data is None:
         raise ValueError(
             "Need a valid vega altair chart and/or dataframe to be provided."

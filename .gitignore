@@ -136,3 +136,4 @@ yarn-error.log*
 # Ignore Static for non-docs
 static/
 !docs-website/static/
+examples/_old/notebooks/avalanche/avalanche_tasks.jupersist

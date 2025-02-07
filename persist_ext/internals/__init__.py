@@ -5,6 +5,7 @@ from persist_ext.internals.widgets.persist_output.wrappers import (
     Persist,
     PersistChart,
     PersistTable,
+    init_persist,
 )
 
 dev.DEV = False
@@ -17,4 +18,5 @@ __all__ = [
     "Persist",
     "PersistChart",
     "PersistTable",
+    "init_persist",
 ]
