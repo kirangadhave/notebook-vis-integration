@@ -14,6 +14,6 @@ class WidgetWithTrrack(BaseAnyWidget):
 
     trrack = traitlets.Dict().tag(sync=True)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, id:str, *args, **kwargs):
         self.output: OutputProcessor
-        super(WidgetWithTrrack, self).__init__(*args, **kwargs)
+        super(WidgetWithTrrack, self).__init__(id=id, *args, **kwargs)

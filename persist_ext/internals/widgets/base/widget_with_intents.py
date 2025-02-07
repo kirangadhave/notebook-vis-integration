@@ -9,5 +9,5 @@ class WidgetWithIntents(WidgetWithInteractions):
     intents = traitlets.List([]).tag(sync=True)
     loading_intents = traitlets.Bool(False).tag(sync=True)
 
-    def __init__(self, *args, **kwargs):
-        super(WidgetWithIntents, self).__init__(*args, **kwargs)
+    def __init__(self, id: str, *args, **kwargs):
+        super(WidgetWithIntents, self).__init__(id=id, *args, **kwargs)

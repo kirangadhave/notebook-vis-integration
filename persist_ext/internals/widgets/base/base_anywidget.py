@@ -1,14 +1,15 @@
 import anywidget
 
 from persist_ext.internals.utils.entry_paths import get_widget_esm_css
+from persist_ext.internals.widgets.base.data_store_widget import DataStoreWidget
 
 
-class BaseAnyWidget(anywidget.AnyWidget):
+class BaseAnyWidget(DataStoreWidget):
     """
     Basic anywidget setup by _esm and _css
     """
 
-    def __init__(self, widget_key=None, *args, **kwargs):
+    def __init__(self, id: str, widget_key=None, *args, **kwargs):
         if widget_key is None:
             raise ValueError("widget_key cannot be none")
 
@@ -19,4 +20,4 @@ class BaseAnyWidget(anywidget.AnyWidget):
         if type(self) is BaseAnyWidget:
             raise NotImplementedError("Cannot create instance of this base class")
 
-        super(BaseAnyWidget, self).__init__(*args, **kwargs)
+        super(BaseAnyWidget, self).__init__(id=id, *args, **kwargs)

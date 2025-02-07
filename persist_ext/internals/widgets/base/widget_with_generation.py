@@ -15,7 +15,7 @@ class WidgetWithGeneration(WidgetWithIntents):
     gdr_signal = traitlets.Dict({}).tag(sync=True)
     gdr_has_synced = traitlets.Bool(False).tag(sync=True)
 
-    def __init__(self, df_name, *args, **kwargs):
+    def __init__(self, id: str, df_name, *args, **kwargs):
         self.gdr_df_name_provided = True
 
         if df_name is None:
@@ -31,6 +31,7 @@ class WidgetWithGeneration(WidgetWithIntents):
         gdr_dynamic_counter = GLOBAL_GENERATION_COUNT[df_name] + 1
 
         super(WidgetWithGeneration, self).__init__(
+            id=id,
             gdr_dynamic_name=df_name,
             gdr_dynamic_counter=gdr_dynamic_counter,
             *args,

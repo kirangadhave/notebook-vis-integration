@@ -23,7 +23,7 @@ class PersistWidget(Base):
 
     is_chart = traitlets.Bool(default_value=False).tag(sync=True)
 
-    def __init__(self, obj, id_column, df_name, data_accessor, *args, **kwargs):
+    def __init__(self, id: str, obj, id_column, df_name, data_accessor, *args, **kwargs):
         is_chart = is_vega_altair_chart(obj)
         chart = None
         data = None
@@ -38,6 +38,7 @@ class PersistWidget(Base):
         self.output = OutputProcessor(widget=self)
 
         super(PersistWidget, self).__init__(
+            id=id,
             df_name=df_name,
             id_column=id_column,
             chart=chart,

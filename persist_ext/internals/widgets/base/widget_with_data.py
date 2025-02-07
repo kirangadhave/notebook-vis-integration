@@ -69,7 +69,7 @@ class WidgetWithData(WidgetWithTrrack):
     # --- Sorting State dict
     df_sorting_state = traitlets.List(default_value=[]).tag(sync=True)
 
-    def __init__(self, data, id_column, *args, **kwargs):
+    def __init__(self, id: str, data, id_column, *args, **kwargs):
         """
         Assign one copy of data to _data_ and one copy to `persistent_data`.
         Add id column if not present.
@@ -92,6 +92,7 @@ class WidgetWithData(WidgetWithTrrack):
         data = self.__infer_object_data_types(data)
 
         super(WidgetWithData, self).__init__(
+            id=id,
             data=data,
             _persistent_data=data.copy(deep=True),
             id_column=id_column,

@@ -29,7 +29,7 @@ class WidgetWithChart(WidgetWithData):
     selection_names = traitlets.List().tag(sync=True)
     selection_types = traitlets.Dict().tag(sync=True)
 
-    def __init__(self, chart, *args, **kwargs):
+    def __init__(self, id: str, chart, *args, **kwargs):
         self.params = Parameters()
         self.selections = Selections()
 
@@ -37,6 +37,7 @@ class WidgetWithChart(WidgetWithData):
             chart = self.process_chart(chart)
 
         super(WidgetWithChart, self).__init__(
+            id=id,
             chart=copy_altair_chart(chart),
             _persistent_chart=copy_altair_chart(chart),
             *args,

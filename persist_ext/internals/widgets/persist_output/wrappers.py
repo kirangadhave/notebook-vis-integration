@@ -13,6 +13,7 @@ from persist_ext.internals.widgets.vegalite_chart.utils import (
 
 
 def Persist(
+    id: str,
     chart=None,
     data=None,
     df_name=None,
@@ -49,7 +50,7 @@ def Persist(
     if data is not None:  # if only showing dataframe
         data = prepare(data, id_column)
         return PersistWidget(
-            data, df_name=df_name, id_column=id_column, data_accessor=data_accessor
+            id, data, df_name=df_name, id_column=id_column, data_accessor=data_accessor
         )
 
 
@@ -59,7 +60,7 @@ def PersistChart(chart, df_name=None, data=None):
     return Persist(chart=chart, data=data, df_name=df_name)
 
 
-def PersistTable(data, df_name=None):
+def PersistTable(data, id: str, df_name=None):
     if not isinstance(data, DataFrame):
         raise TypeError(f"'data' must be a pandas DataFrame. Got {type(data)}")
-    return Persist(data=data, df_name=df_name)
+    return Persist(id=id, data=data, df_name=df_name)
