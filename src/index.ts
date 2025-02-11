@@ -102,9 +102,9 @@ const trrackableCellPlugin: JupyterFrontEndPlugin<NotebookPanel.ContentFactory> 
 
           commands.execute(clearPersistResetAllTrrack);
 
-          window.Persist.CellMap.forEach(cell => {
-            keys.forEach(k => cell?.model?.deleteMetadata(k));
-          });
+          // window.Persist.CellMap.forEach(cell => {
+          //   keys.forEach(k => cell?.model?.deleteMetadata(k));
+          // });
 
           window.Persist.Notebook.save();
           console.log('Cleared persist keys and saved!');

@@ -2,7 +2,6 @@ import { State, extend, hookstate } from '@hookstate/core';
 
 import { LocalStored, localstored } from '@hookstate/localstored';
 import { subscribable, Subscribable } from '@hookstate/subscribable';
-import { Cell, CodeCell } from '@jupyterlab/cells';
 import { decompressString, getCellStoreEngine } from '../utils/cellStoreEngine';
 import { TrrackManager } from '../widgets/trrack/manager';
 import {
@@ -11,10 +10,9 @@ import {
 } from '../utils/stripImmutableClone';
 import { TrrackGraph } from '../widgets/trrack/types';
 import { GeneratedRecord } from '../widgets/utils/dataframe';
-import { Signal } from '@lumino/signaling';
-import { IOutputAreaModel } from '@jupyterlab/outputarea';
-
-export type TrrackableCellId = CodeCell['model']['id'];
+// import { Signal } from '@lumino/signaling';
+import { AnyModel } from '@anywidget/types';
+import { createDataStore, DataStore } from '../utils/data_store';
 
 export const CODE_CELL = 'code-cell';
 export const TRRACK_GRAPH = 'trrack_graph';
@@ -23,22 +21,23 @@ export const ACTIVE_CATEGORY = 'active-category';
 export const GENERATED_DATAFRAMES = '__GENERATED_DATAFRAMES__';
 export const HAS_PERSIST_OUTPUT = '__has_persist_output';
 
-export class TrrackableCell extends CodeCell {
+export class TrrackableCell {
   // Trrack graph
   private __trrackGraph: State<TrrackGraph | null, LocalStored> | null = null;
   private _generatedDataframes: State<GeneratedRecord, Subscribable>;
+  private dataStore: DataStore;
 
   _trrackManager: TrrackManager | null = null;
 
-  constructor(opts: CodeCell.IOptions) {
-    super(opts);
+  constructor(model: AnyModel) {
+    // I don't think we have access to cellMap now that we're not executing the Jupyterlab entry point
+    // if (!window.Persist.CellMap) {
+    //   throw new Error('Entry point not executed');
+    // }
+    // window.Persist.CellMap.set(this.cell_id, this);
+    this.dataStore = createDataStore(model);
 
-    if (!window.Persist.CellMap) {
-      throw new Error('Entry point not executed');
-    }
-    window.Persist.CellMap.set(this.cell_id, this);
-
-    const savedGenRecordString = this.model.getMetadata(GENERATED_DATAFRAMES);
+    const savedGenRecordString = this.dataStore.get(GENERATED_DATAFRAMES);
     const savedGenRecord: any = {};
     savedGenRecordString
       ? JSON.parse(decompressString(savedGenRecordString))
@@ -68,49 +67,52 @@ export class TrrackableCell extends CodeCell {
     //   })
     // );
 
+    // Hopefully we don't need these two lines... TBD
     // add id so that it can be extracted
-    this.node.dataset.id = this.cell_id;
+    // this.node.dataset.id = this.cell_id;
     // add the code-cell tag
-    this.node.dataset.celltype = CODE_CELL;
+    // this.node.dataset.celltype = CODE_CELL;
 
-    const displayPersistNotice = async (
-      outputModel: IOutputAreaModel,
-      _: unknown
-    ) => {
-      await this.ready;
+    // TBD
+    // Idk what this does, but we'll figure out if it's a necessary feature later
+    // const displayPersistNotice = async (
+    //   outputModel: IOutputAreaModel,
+    //   _: unknown
+    // ) => {
+    //   await this.ready;
 
-      const node = this.node;
+    //   const node = this.node;
 
-      const footer: HTMLDivElement | null =
-        node.querySelector('.jp-CellFooter');
+    //   const footer: HTMLDivElement | null =
+    //     node.querySelector('.jp-CellFooter');
 
-      if (outputModel.length !== 0) {
-        if (footer) {
-          footer.innerHTML = '';
-        }
+    //   if (outputModel.length !== 0) {
+    //     if (footer) {
+    //       footer.innerHTML = '';
+    //     }
 
-        return;
-      }
+    //     return;
+    //   }
 
-      if (this.model.getMetadata(TRRACK_GRAPH)) {
-        if (footer) {
-          footer.style.height = 'auto';
-          footer.innerHTML = `
-                <div style="height:20px;width:100%;text-align:center">
-                This cell is a persist cell. Please run the cell to enable interactive output.
-                </div>
-                  `;
-        }
-      }
-    };
+    //   if (this.model.getMetadata(TRRACK_GRAPH)) {
+    //     if (footer) {
+    //       footer.style.height = 'auto';
+    //       footer.innerHTML = `
+    //             <div style="height:20px;width:100%;text-align:center">
+    //             This cell is a persist cell. Please run the cell to enable interactive output.
+    //             </div>
+    //               `;
+    //     }
+    //   }
+    // };
 
-    this.model.outputs.changed.connect(displayPersistNotice, this);
-    displayPersistNotice(this.model.outputs, this);
+    // this.model.outputs.changed.connect(displayPersistNotice, this);
+    // displayPersistNotice(this.model.outputs, this);
   }
 
   private get _trrackGraph() {
     if (this.__trrackGraph === null) {
-      const savedString = this.model.getMetadata(TRRACK_GRAPH);
+      const savedString = this.dataStore.get(TRRACK_GRAPH);
       const savedGraph: TrrackGraph | null = savedString
         ? JSON.parse(decompressString(savedString))
         : null;
@@ -135,7 +137,7 @@ export class TrrackableCell extends CodeCell {
   }
 
   tagAsPersistCell(has = true) {
-    this.model.setMetadata(HAS_PERSIST_OUTPUT, has);
+    this.dataStore.set(HAS_PERSIST_OUTPUT, has.toString());
   }
 
   get generatedDataframesState() {
@@ -157,26 +159,27 @@ export class TrrackableCell extends CodeCell {
   }
 
   get cell_id() {
-    return this.model.id;
+    return this.dataStore.getID();
   }
 
-  dispose() {
-    if (this.isDisposed) {
-      return;
-    }
-    window.Persist.CellMap.delete(this.cell_id);
+  // TBD whether we need this too... would have to figure out how to implement disposal??
+  // dispose() {
+  //   if (this.isDisposed) {
+  //     return;
+  //   }
+  //   window.Persist.CellMap.delete(this.cell_id);
 
-    Signal.clearData(this);
-    super.dispose();
-  }
+  //   Signal.clearData(this);
+  //   super.dispose();
+  // }
 }
 
 export namespace TrrackableCell {
-  export function create(options: CodeCell.IOptions) {
-    return new TrrackableCell(options);
+  export function create(model: AnyModel) {
+    return new TrrackableCell(model);
   }
 
-  export function isTrrackableCell(cell: Cell): cell is TrrackableCell {
+  export function isTrrackableCell(cell: unknown): cell is TrrackableCell {
     return cell instanceof TrrackableCell;
   }
 }
