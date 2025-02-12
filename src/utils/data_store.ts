@@ -18,6 +18,8 @@ export type DataStore = {
   getID(): string;
   /** Synchronizes the key/value pairs with the backend datastore in python */
   sync(): void;
+  /** Deletes a key from the datastore */
+  delete(key: string): void;
 };
 
 /**
@@ -37,6 +39,8 @@ export function createDataStore(model: AnyModel): DataStore {
     );
   }
 
+  console.log('Datastore initialized for cell', id);
+
   // Super hacky fix for the traitlet observer (in python) not firing on *only* the first change
   model.set(STORE_KEY, { key: 'value' });
   model.save_changes();
@@ -48,6 +52,9 @@ export function createDataStore(model: AnyModel): DataStore {
       store[key] = value;
     },
     get: key => store[key],
+    delete: (key: string) => {
+      delete store[key];
+    },
     getID: () => id,
     sync: () => {
       // We need to make a new object for the oberver to fire

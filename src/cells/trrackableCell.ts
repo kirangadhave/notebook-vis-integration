@@ -162,6 +162,34 @@ export class TrrackableCell {
     return this.dataStore.getID();
   }
 
+  /**
+   * Sets the value of a persistent property
+   * @param key The key of the property
+   * @param value The value of the property
+   */
+  setProp(key: string, value: string) {
+    this.dataStore.set(key, value);
+    this.dataStore.sync();
+  }
+
+  /**
+   * Gets the value of a persistent property
+   * @param key The key of the property
+   * @returns The value of the property
+   */
+  getProp(key: string): string {
+    return this.dataStore.get(key);
+  }
+
+  /**
+   * Deletes a persistent property
+   * @param key The key of the property
+   */
+  deleteProp(key: string) {
+    this.dataStore.delete(key);
+    this.dataStore.sync();
+  }
+
   // TBD whether we need this too... would have to figure out how to implement disposal??
   // dispose() {
   //   if (this.isDisposed) {

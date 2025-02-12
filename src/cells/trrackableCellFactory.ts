@@ -1,9 +1,8 @@
-import { CodeCell } from '@jupyterlab/cells';
-import { NotebookPanel } from '@jupyterlab/notebook';
 import { TrrackableCell } from './trrackableCell';
+import { AnyModel } from '@anywidget/types';
 
-export class TrrackableCellFactory extends NotebookPanel.ContentFactory {
-  createCodeCell(options: CodeCell.IOptions): CodeCell {
-    return TrrackableCell.create(options).initializeState();
+export class TrrackableCellFactory {
+  createCodeCell(model: AnyModel) {
+    return TrrackableCell.create(model);
   }
 }

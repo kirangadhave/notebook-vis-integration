@@ -11,17 +11,17 @@ export function getCellStoreEngine(cell: TrrackableCell): StoreEngine {
     getItem(key: string) {
       window.Persist.Notebook.udpatePersistKeyRecord(key);
 
-      const val = cell.model.getMetadata(key) as string;
+      const val = cell.getProp(key);
 
       const processedString = val ? decompressString(val) : val; // decompress if needed
 
       return processedString;
     },
     setItem(key: string, value: string) {
-      cell.model.setMetadata(key, value ? compressToUTF16(value) : value);
+      cell.setProp(key, value ? compressToUTF16(value) : value);
     },
     removeItem(key: string) {
-      return cell.model.deleteMetadata(key);
+      return cell.deleteProp(key);
     }
   };
 }

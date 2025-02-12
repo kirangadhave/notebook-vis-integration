@@ -1,5 +1,5 @@
 import { View } from 'vega';
-import { TrrackableCell, TrrackableCellId } from '../cells';
+import { TrrackableCell } from '../cells';
 import { PersistCommandRegistry } from '../commands';
 import { NotebookWrapper } from '../notebook';
 import { Notification as N } from '@jupyterlab/apputils';
@@ -12,7 +12,7 @@ declare global {
 }
 
 type PersistObject = {
-  CellMap: Map<TrrackableCellId, TrrackableCell>;
+  CellMap: Map<string, TrrackableCell>;
   Commands: PersistCommandRegistry;
   Notebook: NotebookWrapper;
   Views: WeakMap<TrrackableCell, View>;
