@@ -18,6 +18,7 @@ import {
   TrrackEvents
 } from './types';
 import { hookstate } from '@hookstate/core';
+import { PersistCommandRegistry } from '../../commands';
 
 const defaultTrrackState: TrrackState = {
   id: UUID(),
@@ -89,7 +90,7 @@ export class TrrackManager {
         .nested('canRedo')
         .set(this.trrack.current.children.length > 0);
 
-      window.Persist.Commands.registry.notifyCommandChanged();
+      PersistCommandRegistry.instance.registry.notifyCommandChanged();
       this._notifyCurrentChange.emit(this._trrack.current.id);
     };
 

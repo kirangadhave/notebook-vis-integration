@@ -4,7 +4,7 @@ import { DataPoint } from './helpers';
 import { Text, Box, TextInput, Tooltip } from '@mantine/core';
 import { getHotkeyHandler, useValidatedState } from '@mantine/hooks';
 import { TrrackableCell } from '../../cells';
-import { PersistCommands } from '../../commands';
+import { PersistCommandRegistry, PersistCommands } from '../../commands';
 import { PandasDTypes, pandasDTypesLabels } from './DTypeContextMenu';
 
 type Props = {
@@ -42,12 +42,15 @@ export function ColumnHeader({ column, allColumns, cell, dtype }: Props) {
           newColumnName.valid &&
           newColumnName.value !== column.id
         ) {
-          window.Persist.Commands.execute(PersistCommands.renameColumns, {
-            cell,
-            renameColumnMap: {
-              [column.id]: newColumnName.value
+          PersistCommandRegistry.instance.execute(
+            PersistCommands.renameColumns,
+            {
+              cell,
+              renameColumnMap: {
+                [column.id]: newColumnName.value
+              }
             }
-          });
+          );
         } else {
           setNewColumnName(column.id);
         }

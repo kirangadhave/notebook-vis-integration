@@ -14,7 +14,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { IconColumnRemove } from '@tabler/icons-react';
 import { useState } from 'react';
 import { TrrackableCell } from '../../cells';
-import { PersistCommands } from '../../commands';
+import { PersistCommandRegistry, PersistCommands } from '../../commands';
 import { DropColumnsCommandArgs } from '../../interactions/dropColumn';
 import { HeaderActionIcon } from './StyledActionIcon';
 
@@ -70,7 +70,7 @@ export function DropColumnPopover({ cell }: Props) {
                   columns: selectedColumns
                 };
 
-                window.Persist.Commands.execute(
+                PersistCommandRegistry.instance.execute(
                   PersistCommands.dropColumns,
                   args
                 );

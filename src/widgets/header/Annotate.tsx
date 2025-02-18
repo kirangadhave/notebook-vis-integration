@@ -12,7 +12,7 @@ import { ReadonlyPartialJSONObject } from '@lumino/coreutils';
 import { TrrackableCell } from '../../cells';
 import { useDisclosure, useInputState } from '@mantine/hooks';
 import { IconNotes } from '@tabler/icons-react';
-import { PersistCommands } from '../../commands';
+import { PersistCommandRegistry, PersistCommands } from '../../commands';
 import { AnnotateCommandArgs } from '../../interactions/annotate';
 import { HeaderActionIcon } from './StyledActionIcon';
 
@@ -69,7 +69,7 @@ export function Annotate({ cell, isDisabled = false }: Props) {
             disabled={!note.length}
             onClick={() => {
               // Annotate
-              window.Persist.Commands.registry.execute(
+              PersistCommandRegistry.instance.registry.execute(
                 PersistCommands.annotate,
                 args as unknown as ReadonlyPartialJSONObject
               );

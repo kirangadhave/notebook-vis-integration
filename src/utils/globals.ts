@@ -1,40 +1,48 @@
 import { View } from 'vega';
 import { TrrackableCell } from '../cells';
-import { PersistCommandRegistry } from '../commands';
-import { NotebookWrapper } from '../notebook';
-import { Notification as N } from '@jupyterlab/apputils';
 
-declare global {
-  // eslint-disable-next-line
-  interface Window {
-    Persist: PersistObject;
+/**
+ * Global views map.
+ * This is a singleton map that stores all the views in the notebook.
+ */
+export class PersistViews extends WeakMap<TrrackableCell, View> {
+  private static _instance: PersistViews;
+
+  /**
+   * The singleton instance of the views map.
+   */
+  static get instance() {
+    if (!PersistViews._instance) {
+      PersistViews._instance = new PersistViews();
+    }
+
+    return PersistViews._instance;
+  }
+
+  private constructor() {
+    super();
   }
 }
 
-type PersistObject = {
-  CellMap: Map<string, TrrackableCell>;
-  Commands: PersistCommandRegistry;
-  Notebook: NotebookWrapper;
-  Views: WeakMap<TrrackableCell, View>;
-  Notification: {
-    notify: typeof N.emit;
-  };
-};
-
 /**
- * The function `setupPersist` initializes the `Persist` object with a `CellMap`, `Commands`, and
- * `Notebook` property.
+ * Global cell map.
+ * This is a singleton map that stores all the cells in the notebook.
  */
-export function setupPersist() {
-  window.Persist = {
-    CellMap: new Map(),
-    Commands: new PersistCommandRegistry(),
-    Notebook: new NotebookWrapper(),
-    Views: new WeakMap(),
-    Notification: {
-      notify(...args: Parameters<typeof N.emit>) {
-        return N.emit(...args);
-      }
+export class PersistCellMap extends Map<string, TrrackableCell> {
+  private static _instance: PersistCellMap;
+
+  /**
+   * The singleton instance of the cell map.
+   */
+  static get instance() {
+    if (!PersistCellMap._instance) {
+      PersistCellMap._instance = new PersistCellMap();
     }
-  };
+
+    return PersistCellMap._instance;
+  }
+
+  private constructor() {
+    super();
+  }
 }

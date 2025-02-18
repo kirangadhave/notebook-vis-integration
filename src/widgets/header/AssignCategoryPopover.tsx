@@ -15,7 +15,7 @@ import { IconCategory, IconHelp } from '@tabler/icons-react';
 import { TrrackableCell } from '../../cells';
 import { HeaderActionIcon } from './StyledActionIcon';
 import { useModelState } from '@anywidget/react';
-import { PersistCommands } from '../../commands';
+import { PersistCommandRegistry, PersistCommands } from '../../commands';
 import { Categories } from '../../interactions/categorize';
 import { PERSIST_ICON_SIZE } from '../interactive_table/constants';
 import { useCategoryOptions } from './categoryHelpers';
@@ -97,7 +97,7 @@ export function AssignCategoryPopover({ cell }: Props) {
                   color="blue"
                   key={o}
                   onClick={() => {
-                    window.Persist.Commands.execute(
+                    PersistCommandRegistry.instance.execute(
                       PersistCommands.categorize,
                       {
                         cell,

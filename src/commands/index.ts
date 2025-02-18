@@ -113,11 +113,31 @@ export type CommandArgMap = {
   [PersistCommands.insertCellWithDataframe]: PostDataframeGenerationCommandArg;
 };
 
+/**
+ * A registry of commands for the persist extension.
+ * Implemented as a singleton
+ */
 export class PersistCommandRegistry {
   private _commandsDisposeMap = new Map<string, IDisposable>();
   private _commands: CommandRegistry = new CommandRegistry();
 
-  constructor() {
+  private static _instance: PersistCommandRegistry;
+
+  /**
+   * The singleton instance of the command registry.
+   */
+  static get instance() {
+    if (!PersistCommandRegistry._instance) {
+      PersistCommandRegistry._instance = new PersistCommandRegistry();
+    }
+
+    return PersistCommandRegistry._instance;
+  }
+
+  /**
+   * Private constructor enforces singleton pattern.
+   */
+  private constructor() {
     this.addCommand(PersistCommands.resetTrrack, {
       isEnabled(args) {
         const { cell } = castArgs<BaseCommandArg>(args);

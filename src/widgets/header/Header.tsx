@@ -2,7 +2,7 @@ import { useModelState } from '@anywidget/react';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { TrrackableCell } from '../../cells';
 import { Button, Divider, Group, Tooltip } from '@mantine/core';
-import { PersistCommands } from '../../commands';
+import { PersistCommandRegistry, PersistCommands } from '../../commands';
 import {
   IconArrowBackUp,
   IconArrowForwardUp,
@@ -98,7 +98,7 @@ export function Header({ cell }: Props) {
       <Divider orientation="vertical" />
       <CommandButton
         cell={cell}
-        commandRegistry={window.Persist.Commands.registry}
+        commandRegistry={PersistCommandRegistry.instance.registry}
         commandId={PersistCommands.filterOut}
         icon={<IconFilterMinus />}
         isDisabled={!hasSelections}
@@ -108,7 +108,7 @@ export function Header({ cell }: Props) {
       />
       <CommandButton
         cell={cell}
-        commandRegistry={window.Persist.Commands.registry}
+        commandRegistry={PersistCommandRegistry.instance.registry}
         commandId={PersistCommands.filterIn}
         icon={<IconFilterPlus />}
         isDisabled={!hasSelections}
@@ -117,7 +117,9 @@ export function Header({ cell }: Props) {
         }}
       />
       <Divider orientation="vertical" />
-      <UseSignal signal={window.Persist.Commands.registry.commandChanged}>
+      <UseSignal
+        signal={PersistCommandRegistry.instance.registry.commandChanged}
+      >
         {() => <Annotate cell={cell} isDisabled={!hasSelections} />}
       </UseSignal>
       <Divider orientation="vertical" />
@@ -128,9 +130,12 @@ export function Header({ cell }: Props) {
           variant="subtle"
           onClick={() => {
             resetDataframes(generatedRecord);
-            window.Persist.Commands.execute(PersistCommands.resetTrrack, {
-              cell
-            });
+            PersistCommandRegistry.instance.execute(
+              PersistCommands.resetTrrack,
+              {
+                cell
+              }
+            );
           }}
         >
           Reset Trrack

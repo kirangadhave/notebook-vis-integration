@@ -12,7 +12,7 @@ import {
 } from '@mantine/core';
 import { TrrackableCell } from '../../cells';
 import { useValidatedState } from '@mantine/hooks';
-import { PersistCommands } from '../../commands';
+import { PersistCommandRegistry, PersistCommands } from '../../commands';
 import { IconEdit } from '@tabler/icons-react';
 
 export type Props = {
@@ -69,12 +69,15 @@ export function RenameTableColumnPopover({
             <Button
               disabled={!name.valid || name.value === column.id}
               onClick={() => {
-                window.Persist.Commands.execute(PersistCommands.renameColumns, {
-                  cell,
-                  renameColumnMap: {
-                    [column.id]: name.value
+                PersistCommandRegistry.instance.execute(
+                  PersistCommands.renameColumns,
+                  {
+                    cell,
+                    renameColumnMap: {
+                      [column.id]: name.value
+                    }
                   }
-                });
+                );
               }}
             >
               Rename

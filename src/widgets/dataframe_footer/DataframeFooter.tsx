@@ -21,7 +21,7 @@ import { DataframeNameBadge } from '../components/DataframeNameBadge';
 import { IconCopy, IconRowInsertTop, IconX } from '@tabler/icons-react';
 import { useValidatedState } from '@mantine/hooks';
 import { isValidPythonVar } from '../utils/isValidPythonVar';
-import { PersistCommands } from '../../commands';
+import { PersistCommandRegistry, PersistCommands } from '../../commands';
 import { isEqual } from 'lodash';
 
 type Props = {
@@ -95,7 +95,7 @@ export function DataframeFooter({ cell }: Props) {
 
   const createDataframeHandler = useCallback(
     (post?: 'copy' | 'insert') => {
-      window.Persist.Commands.execute(PersistCommands.createDataframe, {
+      PersistCommandRegistry.instance.execute(PersistCommands.createDataframe, {
         cell,
         model,
         record: getRecord(

@@ -36,7 +36,7 @@ import {
 import { TrrackableCell } from '../../cells';
 import { HeaderActionIcon } from './StyledActionIcon';
 import { useModelState } from '@anywidget/react';
-import { PersistCommands } from '../../commands';
+import { PersistCommandRegistry, PersistCommands } from '../../commands';
 import { Categories } from '../../interactions/categorize';
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import { PERSIST_ICON_SIZE } from '../interactive_table/constants';
@@ -105,7 +105,7 @@ export function EditCategoryPopover({ cell }: Props) {
   );
 
   const addOptionCb = useCallback((category: string, option: string) => {
-    window.Persist.Commands.execute(PersistCommands.categorize, {
+    PersistCommandRegistry.instance.execute(PersistCommands.categorize, {
       cell,
       action: {
         op: 'add',
@@ -157,7 +157,7 @@ export function EditCategoryPopover({ cell }: Props) {
       creatable
       getCreateLabel={q => `+ Add category '${q}'`}
       onCreate={q => {
-        window.Persist.Commands.execute(PersistCommands.categorize, {
+        PersistCommandRegistry.instance.execute(PersistCommands.categorize, {
           cell,
           action: {
             op: 'add',
@@ -214,7 +214,7 @@ export function EditCategoryPopover({ cell }: Props) {
                     size="xs"
                     label="Order options"
                     onChange={() => {
-                      window.Persist.Commands.execute(
+                      PersistCommandRegistry.instance.execute(
                         PersistCommands.categorize,
                         {
                           cell,
@@ -253,7 +253,7 @@ export function EditCategoryPopover({ cell }: Props) {
 
                         optionsHandlers.setState(opts);
 
-                        window.Persist.Commands.execute(
+                        PersistCommandRegistry.instance.execute(
                           PersistCommands.categorize,
                           {
                             cell,
@@ -331,7 +331,7 @@ export function EditCategoryPopover({ cell }: Props) {
                                           variant="transparent"
                                           className={classes.hoverScale}
                                           onClick={() => {
-                                            window.Persist.Commands.execute(
+                                            PersistCommandRegistry.instance.execute(
                                               PersistCommands.categorize,
                                               {
                                                 cell,
@@ -431,7 +431,7 @@ export function EditCategoryPopover({ cell }: Props) {
                   color="red"
                   size="xs"
                   onClick={() => {
-                    window.Persist.Commands.execute(
+                    PersistCommandRegistry.instance.execute(
                       PersistCommands.categorize,
                       {
                         cell,

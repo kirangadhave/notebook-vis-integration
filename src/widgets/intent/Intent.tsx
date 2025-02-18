@@ -12,7 +12,7 @@ import { TrrackableCell } from '../../cells';
 import { IconCheck } from '@tabler/icons-react';
 import { Nullable } from '../../utils/nullable';
 import { debounce } from 'lodash';
-import { PersistCommands } from '../../commands';
+import { PersistCommandRegistry, PersistCommands } from '../../commands';
 
 type Props = {
   cell: TrrackableCell;
@@ -155,19 +155,22 @@ export function PredictionComponent({
             const intent = predictionToIntent(prediction);
             const members = intent.members;
 
-            window.Persist.Commands.execute(PersistCommands.intentSelection, {
-              cell,
-              intent,
-              name: 'index_selection',
-              store: members.map(p => ({
-                field: ID_COLUMN,
-                channel: 'y',
-                type: 'E' as const,
-                values: [p]
-              })),
-              value: members.map(p => ({ [ID_COLUMN]: p })),
-              brush_type: 'point'
-            });
+            PersistCommandRegistry.instance.execute(
+              PersistCommands.intentSelection,
+              {
+                cell,
+                intent,
+                name: 'index_selection',
+                store: members.map(p => ({
+                  field: ID_COLUMN,
+                  channel: 'y',
+                  type: 'E' as const,
+                  values: [p]
+                })),
+                value: members.map(p => ({ [ID_COLUMN]: p })),
+                brush_type: 'point'
+              }
+            );
             // cell.trrackManager.actions.addIntentSelection({
             //   id: UUID.uuid4(),
             //   type: 'intent',

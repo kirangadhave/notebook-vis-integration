@@ -63,9 +63,6 @@ export function PersistOutput({ cell }: Props) {
             case 'undo':
               cell.trrackManager.trrack.undo();
               break;
-            case 'save':
-              window.Persist.Notebook.save(true);
-              break;
             default:
               console.log('Incorrect action');
           }

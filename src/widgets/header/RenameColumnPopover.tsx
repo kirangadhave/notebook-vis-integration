@@ -15,7 +15,7 @@ import { useDisclosure, useValidatedState } from '@mantine/hooks';
 import { IconEdit } from '@tabler/icons-react';
 import { useState } from 'react';
 import { TrrackableCell } from '../../cells';
-import { PersistCommands } from '../../commands';
+import { PersistCommandRegistry, PersistCommands } from '../../commands';
 import { RenameColumnCommandArgs } from '../../interactions/renameColumn';
 import { useModelState } from '@anywidget/react';
 import { HeaderActionIcon } from './StyledActionIcon';
@@ -116,7 +116,7 @@ export function RenameColumnPopover({ cell }: Props) {
                   }
                 };
 
-                window.Persist.Commands.registry.execute(
+                PersistCommandRegistry.instance.registry.execute(
                   PersistCommands.renameColumns,
                   args as unknown as ReadonlyPartialJSONObject
                 );

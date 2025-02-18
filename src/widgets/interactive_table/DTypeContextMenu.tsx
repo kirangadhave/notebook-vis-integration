@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { MRT_Column } from 'mantine-react-table';
 import { DataPoint } from './helpers';
 import { useModelState } from '@anywidget/react';
-import { PersistCommands } from '../../commands';
+import { PersistCommandRegistry, PersistCommands } from '../../commands';
 import { TrrackableCell } from '../../cells';
 
 const pandasDTypes = [
@@ -116,7 +116,7 @@ export function DTypeContextMenu({ cell, column }: Props) {
                   return;
                 }
 
-                window.Persist.Commands.execute(
+                PersistCommandRegistry.instance.execute(
                   PersistCommands.changeColumnDataType,
                   {
                     cell,
@@ -163,7 +163,7 @@ export function DTypeContextMenu({ cell, column }: Props) {
                         disabled={!dateFormat}
                         onClick={() => {
                           if (dateFormat) {
-                            window.Persist.Commands.execute(
+                            PersistCommandRegistry.instance.execute(
                               PersistCommands.changeColumnDataType,
                               {
                                 cell,

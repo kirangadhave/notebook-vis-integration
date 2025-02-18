@@ -5,7 +5,7 @@ import { BaseCommandArg } from '../../interactions/base';
 import { castArgs } from '../../utils/castArgs';
 import { AnyModel, ObjectHash } from '@anywidget/types';
 import { NotebookActions } from '@jupyterlab/notebook';
-import { PersistCommands } from '../../commands';
+import { PersistCommandRegistry, PersistCommands } from '../../commands';
 import { TrrackProvenance } from '../trrack/types';
 import { getInteractionsFromRoot } from '../trrack/utils';
 
@@ -94,11 +94,16 @@ export function postCreationAction(
   action?: 'copy' | 'insert'
 ) {
   if (action === 'copy') {
-    window.Persist.Commands.execute(PersistCommands.copyDataframe, { record });
-  } else if (action === 'insert') {
-    window.Persist.Commands.execute(PersistCommands.insertCellWithDataframe, {
+    PersistCommandRegistry.instance.execute(PersistCommands.copyDataframe, {
       record
     });
+  } else if (action === 'insert') {
+    PersistCommandRegistry.instance.execute(
+      PersistCommands.insertCellWithDataframe,
+      {
+        record
+      }
+    );
   }
 }
 
@@ -110,16 +115,6 @@ function notifyCopyFailure(name: string, error: Error) {
   window.Persist.Notification.notify(
     `Failed to copy ${name} to clipboard. ${error}`,
     'error',
-    {
-      autoClose: 500
-    }
-  );
-}
-
-function notifyCopySuccess(dfName: string) {
-  window.Persist.Notification.notify(
-    `Copied code for df: ${dfName}`,
-    'success',
     {
       autoClose: 500
     }

@@ -7,9 +7,10 @@ import { View } from 'vega';
 import { TopLevelSpec } from 'vega-lite';
 import { SelectionParameter } from 'vega-lite/build/src/selection';
 import { TrrackableCell } from '../../cells';
-import { PersistCommands } from '../../commands';
+import { PersistCommandRegistry, PersistCommands } from '../../commands';
 
 import { useDebouncedValue, useLocalStorage } from '@mantine/hooks';
+import { PersistViews } from '../../utils/globals';
 
 type Props = {
   cell: TrrackableCell;
@@ -36,7 +37,7 @@ export function Vegalite({ cell }: Props) {
   // Callback to set a Vega view object in VegaView
   const newViewCallback = useCallback(
     (view: View) => {
-      window.Persist.Views.set(cell, view);
+      PersistViews.instance.set(cell, view);
       const sigListeners: SignalListeners = {};
 
       selectionNames.forEach(name => {
@@ -44,13 +45,16 @@ export function Vegalite({ cell }: Props) {
 
         sigListeners[name] = debounce(
           (_: string, value: SelectionParameter['value']) => {
-            window.Persist.Commands.execute(PersistCommands.intervalSelection, {
-              cell,
-              name,
-              value,
-              store: view.data(storeName) || [],
-              brush_type: selectionTypes[name] || 'interval'
-            });
+            PersistCommandRegistry.instance.execute(
+              PersistCommands.intervalSelection,
+              {
+                cell,
+                name,
+                value,
+                store: view.data(storeName) || [],
+                brush_type: selectionTypes[name] || 'interval'
+              }
+            );
           },
           waitTime
         ) as any;
