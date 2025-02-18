@@ -50,8 +50,7 @@ import {
   PostDataframeGenerationCommandArg,
   copyGeneratedDataframeCommandOption,
   createDataframeCommandOption,
-  deleteGeneratedDataframeCommandOption,
-  insertCellWithGeneratedDataframeCommandOption
+  deleteGeneratedDataframeCommandOption
 } from '../widgets/utils/dataframe';
 
 export namespace PersistCommands {
@@ -195,10 +194,10 @@ export class PersistCommandRegistry {
       PersistCommands.copyDataframe,
       copyGeneratedDataframeCommandOption
     );
-    this.addCommand(
-      PersistCommands.insertCellWithDataframe,
-      insertCellWithGeneratedDataframeCommandOption
-    );
+    // this.addCommand(
+    //   PersistCommands.insertCellWithDataframe,
+    //   insertCellWithGeneratedDataframeCommandOption
+    // );
   }
 
   addCommand(id: string, opts: CommandRegistry.ICommandOptions) {
