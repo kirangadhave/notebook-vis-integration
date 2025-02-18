@@ -13,6 +13,7 @@ import { IconCheck } from '@tabler/icons-react';
 import { Nullable } from '../../utils/nullable';
 import { debounce } from 'lodash';
 import { PersistCommandRegistry, PersistCommands } from '../../commands';
+import { PersistViews } from '../../utils/globals';
 
 type Props = {
   cell: TrrackableCell;
@@ -92,7 +93,7 @@ export function PredictionComponent({
 
   const notifyVegaOfHover = useCallback(
     debounce((pred: Nullable<Prediction>) => {
-      const view = window.Persist.Views.get(cell);
+      const view = PersistViews.instance.get(cell);
 
       if (view) {
         view.signal('__test_selection____pred_hover__', pred?.members || []);
