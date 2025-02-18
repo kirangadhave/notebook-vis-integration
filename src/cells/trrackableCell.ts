@@ -35,8 +35,8 @@ export class TrrackableCell {
     // if (!window.Persist.CellMap) {
     //   throw new Error('Entry point not executed');
     // }
-    PersistCellMap.instance.set(this.cell_id, this);
     this.dataStore = createDataStore(model);
+    PersistCellMap.instance.set(this.cell_id, this);
 
     const savedGenRecordString = this.dataStore.get(GENERATED_DATAFRAMES);
     const savedGenRecord: any = {};

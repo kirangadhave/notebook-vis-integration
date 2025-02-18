@@ -39,8 +39,6 @@ export function createDataStore(model: AnyModel): DataStore {
     );
   }
 
-  console.log('Datastore initialized for cell', id);
-
   // Super hacky fix for the traitlet observer (in python) not firing on *only* the first change
   model.set(STORE_KEY, { key: 'value' });
   model.save_changes();
