@@ -12,7 +12,8 @@ import { TrrackGraph } from '../widgets/trrack/types';
 import { GeneratedRecord } from '../widgets/utils/dataframe';
 // import { Signal } from '@lumino/signaling';
 import { AnyModel } from '@anywidget/types';
-import { createDataStore, DataStore } from '../utils/data_store';
+import { createDataStore, DataStore } from '../utils/dataStore';
+import { PersistCellMap } from '../utils/globals';
 
 export const CODE_CELL = 'code-cell';
 export const TRRACK_GRAPH = 'trrack_graph';
