@@ -26,11 +26,25 @@ export function PersistOutput({ cell }: Props) {
     cell.tagAsPersistCell();
   }, [cell]);
 
+  // Fix for an ipywidgets bug that turns the whole background white
+  useEffect(() => {
+    document.body.style.backgroundColor = 'transparent';
+  }, []);
+
   const component = isChart ? (
     <Vegalite cell={cell} />
   ) : (
     <DatatableComponent cell={cell} />
   );
+
+  const style = `
+    .cell-output-ipywidget-background {
+        background-color: transparent !important;
+      }
+      .jp-OutputArea-output {
+        background-color: transparent;
+      }
+  `;
 
   return (
     <MantineProvider
@@ -51,6 +65,7 @@ export function PersistOutput({ cell }: Props) {
         }
       }}
     >
+      <style>{style}</style>
       <ErrorBoundary
         FallbackComponent={ErrorFallback}
         onReset={({ args }: any) => {
@@ -68,7 +83,7 @@ export function PersistOutput({ cell }: Props) {
           }
         }}
       >
-        <Stack justify="flex-start" spacing="xs">
+        <Stack justify="flex-start" spacing="xs" bg="white">
           <Box>
             <Header cell={cell} />
           </Box>
